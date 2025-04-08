@@ -20,6 +20,12 @@ app_common_test: test/app_common_test.c $(app_common) $(log)
 	-./$@
 	-rm $@
 
+app_message := app/app_message.c app/app_message.h
+app_message_test: test/app_message_test.c $(app_common) $(app_message) $(log) $(json)
+	-$(CC) $^ -o $@ -I app -I thirdparty
+	-./$@
+	-rm $@
+
 # $^ 依赖列表
 # $@ 目标文件
 # -I 给gcc配置包含的查看路径
