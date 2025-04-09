@@ -26,6 +26,12 @@ app_message_test: test/app_message_test.c $(app_common) $(app_message) $(log) $(
 	-./$@
 	-rm $@
 
+app_pool := app/app_pool.c app/app_pool.h
+app_pool_test: test/app_pool_test.c $(app_pool) $(log)
+	-$(CC) $^ -o $@ -I app -I thirdparty
+	-./$@
+	-rm $@
+
 # $^ 依赖列表
 # $@ 目标文件
 # -I 给gcc配置包含的查看路径
