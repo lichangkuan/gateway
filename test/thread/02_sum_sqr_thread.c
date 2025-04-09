@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/time.h>
+#include <pthread.h>
+#include <stdlib.h>
 
 // 这里的计算平方只是假设，可以想象成是一个需要耗时1秒的复杂计算
 int calc_sqr(int a)
@@ -9,6 +11,17 @@ int calc_sqr(int a)
     return a * a;
 }
 
+// 计算的线程函数
+void *calc_thread_fun(void *arg)
+{
+    int num = *(int *)arg;
+    int *result =  malloc(sizeof(int));
+    *result = calc_sqr(num);
+    // return result;
+    pthread_exit(result);
+}
+
+pthread_t pts[5];
 // 对一个数组中的数分别求平方然后再汇总求和
 int main(int argc, char const *argv[])
 {
@@ -21,7 +34,17 @@ int main(int argc, char const *argv[])
     // 计算items中每个数的平方，并存储到sqrs中
     for (int i = 0; i < 5; i++)
     {
-        sqrs[i] = calc_sqr(items[i]);
+        // sqrs[i] = calc_sqr(items[i]);
+        pthread_create(&pts[i], NULL, calc_thread_fun, &items[i]);
+    }
+
+    // 等待所有线程结束
+    for (int i = 0; i < 5; i++)
+    {
+        void *result;
+        pthread_join(pts[i], &result);
+        sqrs[i] = *(int *)result;
+        free(result);
     }
 
     gettimeofday(&end_t, NULL);
