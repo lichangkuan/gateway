@@ -2,6 +2,7 @@
 #include "log/log.h"
 #include <pthread.h>
 #include <stdlib.h>
+#include <mqueue.h>
 
 // 线程数量
 static int thread_num; // 线程数量
@@ -10,7 +11,7 @@ static pthread_t *thread_pool; // 线程池中所有线程标识的容器
 
 static mqd_t mq_fd; // 消息队列标识符
 
-static char *mq_name = "/app_pool"; // 消息队列名称
+static char *mq_name = "/app_pool_mq"; // 消息队列名称
 
 // 线程函数
 void *thread_fun(void *arg)
@@ -37,6 +38,18 @@ void *thread_fun(void *arg)
 
 int app_pool_init(int size)
 {
+    // 初始化任务队列
+    struct mq_attr mq_attr;
+    mq_attr.mq_maxmsg = 10; // 最大消息数
+    mq_attr.mq_msgsize = sizeof(Task); // 消息大小
+    mq_attr.mq_curmsgs = 0; // 当前消息数
+    mq_fd = mq_open(mq_name, O_CREAT | O_RDWR, 0644, &mq_attr);
+    if (mq_fd == -1)
+    {
+        log_error("创建消息队列失败");
+        return -1;
+    }
+
     // 初始化线程池
     thread_num = size;
     
@@ -48,12 +61,9 @@ int app_pool_init(int size)
         pthread_create(&thread_pool[i], NULL, thread_fun, NULL);
     }
     
-    // 初始化任务队列
-    struct mq_attr mq_attr;
-    mq_attr.mq_maxmsg = 10; // 最大消息数
-    mq_attr.mq_msgsize = sizeof(Task); // 消息大小
-    mq_attr.mq_curmsgs = 0; // 当前消息数
-    mq_fd = mq_open(mq_name, O_CREAT | O_RDWR, 0666, &mq_attr);
+    log_debug("线程池初始化成功");
+
+    return 0;
     
 
 }

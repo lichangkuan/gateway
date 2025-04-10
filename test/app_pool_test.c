@@ -2,6 +2,7 @@
 #include "app_pool.h"
 #include "log/log.h"
 #include <unistd.h>
+#include <stdlib.h>
 
 int task_func(void *arg)
 {
@@ -14,7 +15,9 @@ int main(int argc, char const *argv[])
 
     for (int i = 0; i < 10; i++)
     {
-        app_pool_addTask(task_func, "abcd"); // 添加任务到线程池
+        char *name = malloc(10); // 分配内存
+        sprintf(name, "task_%d", i);
+        app_pool_addTask(task_func, name); // 添加任务到线程池
     }
     sleep(1); // 等待任务执行完毕
     app_pool_destroy(); // 销毁线程池
