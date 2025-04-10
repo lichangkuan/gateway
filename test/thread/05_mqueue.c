@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-static char *mq_name = "/my_mq";    
+static char *mq_name = "/my_mq";    // '/':表示绝对路径:/dev/mqueue, 'my_mq':消息队列目录名
 static mqd_t mq_fd; // 消息队列描述符
 
 // first线程函数
