@@ -17,3 +17,13 @@ cancel: 03_cancel.c
 	-gcc $^ -o $@
 	-./$@
 	-rm $@
+
+race_condition: 04_race_condition.c
+	-gcc $^ -o $@
+	-./$@
+	-rm $@
+
+mutex_lock: 04_mutex_lock.c
+	-gcc $^ -o $@
+	-./$@
+	-rm $@
