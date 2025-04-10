@@ -32,6 +32,12 @@ app_pool_test: test/app_pool_test.c $(app_pool) $(log)
 	-./$@
 	-rm $@
 
+app_buffer := app/app_buffer.h app/app_buffer.c
+app_buffer_test: test/app_buffer_test.c $(app_buffer) $(log)
+	-$(CC) $^ -o $@ -I app -I thirdparty
+	-./$@
+	-rm $@
+
 # $^ 依赖列表
 # $@ 目标文件
 # -I 给gcc配置包含的查看路径
