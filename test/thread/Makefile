@@ -12,3 +12,8 @@ sum_sqr_thread: 02_sum_sqr_thread.c
 	-gcc $^ -o $@
 	-./$@
 	-rm $@
+
+cancel: 03_cancel.c
+	-gcc $^ -o $@
+	-./$@
+	-rm $@
