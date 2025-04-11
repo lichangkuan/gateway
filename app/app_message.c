@@ -8,7 +8,7 @@ char *app_message_chars2Json(char *chars, int chars_len)
 {
     // 生成json格式消息
     cJSON *root_obj = cJSON_CreateObject();
-    cJSON *cJSON_AddNumberToObject
+    cJSON *cJSON_AddNumberToObject;
 }
 
 

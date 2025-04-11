@@ -38,6 +38,8 @@ app_buffer_test: test/app_buffer_test.c $(app_buffer) $(log)
 	-./$@
 	-rm $@
 
+
+
 # $^ 依赖列表
 # $@ 目标文件
 # -I 给gcc配置包含的查看路径
